@@ -33,6 +33,7 @@ public class MessageController {
         return Response.status(404).entity("Message wasn't sent. Receiver mail not found").build();
     }
 
+
     @GET
     @Path("/list")
     public List<Message> messageList(@QueryParam("username") String username){
@@ -55,6 +56,20 @@ public class MessageController {
     @Path("/unread")
     public Response markAsUnreadMessage(MessageInput messageInput){
         service.markAsUnreadMessage(messageInput);
+        return Response.ok().status(200).build();
+    }
+
+    @POST
+    @Path("/important")
+    public Response markAsImportantMessage(MessageInput messageInput){
+        service.markAsImportantMessage(messageInput);
+        return Response.ok().status(200).build();
+    }
+
+    @POST
+    @Path("/unimportant")
+    public Response markAsUnimportantMessage(MessageInput messageInput){
+        service.markAsUnimportantMessage(messageInput);
         return Response.ok().status(200).build();
     }
 

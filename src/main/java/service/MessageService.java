@@ -125,6 +125,32 @@ public class MessageService {
     }
 
     @Transactional
+    public void markAsImportantMessage(MessageInput messageInput) {
+        Message mes = (Message) em.createQuery("SELECT m FROM Message m WHERE m.subject = :value1" +
+                " AND m.receiver.mail = :value2 AND m.content = :value3 AND m.sender.mail = :value4")
+                .setParameter("value1", messageInput.getSubject())
+                .setParameter("value2", messageInput.getReceiverMail())
+                .setParameter("value3", messageInput.getContent())
+                .setParameter("value4", messageInput.getSenderMail())
+                .getSingleResult();
+        mes.setImportant(true);
+        em.persist(mes);
+    }
+
+    @Transactional
+    public void markAsUnimportantMessage(MessageInput messageInput) {
+        Message mes = (Message) em.createQuery("SELECT m FROM Message m WHERE m.subject = :value1" +
+                " AND m.receiver.mail = :value2 AND m.content = :value3 AND m.sender.mail = :value4")
+                .setParameter("value1", messageInput.getSubject())
+                .setParameter("value2", messageInput.getReceiverMail())
+                .setParameter("value3", messageInput.getContent())
+                .setParameter("value4", messageInput.getSenderMail())
+                .getSingleResult();
+        mes.setImportant(false);
+        em.persist(mes);
+    }
+
+    @Transactional
     public void moveMessage(String username, String folderName, MessageInput messageInput){
         Client c = (Client) em.createQuery("SELECT t FROM Client t WHERE t.username = :value1")
                 .setParameter("value1", username)
